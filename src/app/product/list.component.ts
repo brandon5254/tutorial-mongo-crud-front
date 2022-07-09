@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { ProductService } from './../services/product.service';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
@@ -27,9 +28,38 @@ export class ListComponent implements OnInit {
         this.products = data;
       },
       err => {
-        this.toast.error(err.error.message, 'Error', { timeOut: 3000, positionClass: 'toast-top-center'});
+        this.toast.error(err.error.message, 'Error', { timeOut: 3000, positionClass: 'toast-top-center' });
       }
     );
+  }
+
+  onDelete(id: number): void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You cannot undo',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'OK',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.value) {
+        this.productService.delete(id).subscribe(
+          data => {
+            this.toast.success(data.message, 'OK', { timeOut: 3000, positionClass: 'toast-top-center' });
+            this.getProducts();
+          },
+          err => {
+            this.toast.error(err.error.message, 'Error', { timeOut: 3000, positionClass: 'toast-top-center' });
+          }
+        );
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'canceled',
+          'product not deleted',
+          'error'
+        )
+      }
+    });
   }
 
 }
