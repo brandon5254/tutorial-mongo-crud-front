@@ -103,5 +103,8 @@
       }
     }
   },
-  "defaultProject": "crud-mongo-front"
+  "defaultProject": "crud-mongo-front",
+  "cli": {
+    "analytics": "a8a28f76-9c70-4456-b043-4ce5746f1dca"
+  }
 }
